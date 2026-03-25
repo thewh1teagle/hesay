@@ -1,0 +1,18 @@
+[workspace]
+
+[package]
+name = "hebrew-speaker"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+renikud-rs = { path = "../renikud-rs" }
+piper-rs = { git = "https://github.com/thewh1teagle/piper-rs", rev = "616e682" }
+rodio = "0.20"
+anyhow = "1"
+regex = "1"
+espeak-rs = { git = "https://github.com/thewh1teagle/piper-rs", rev = "616e682" }
+serde_json = "1"
+hound = "3"
+ort = "=2.0.0-rc.11"
+ort-sys = "=2.0.0-rc.11"

@@ -8,6 +8,7 @@ Speaking Hebrew using [renikud-rs](https://github.com/thewh1teagle/renikud) for 
 - Hebrew text to speech via neural G2P + TTS
 - Mixed Hebrew/English input — English words are phonemized via eSpeak
 - ONNX Runtime embedded
+- Drop-in ready for AI agents and pipelines — just call the binary
 
 ## Usage
 

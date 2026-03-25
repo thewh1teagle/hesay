@@ -1,6 +1,6 @@
 # hesay
 
-~200MB self-contained binary for speaking Hebrew. Uses [renikud-rs](https://github.com/thewh1teagle/renikud) for Hebrew G2P and [piper-rs](https://github.com/thewh1teagle/piper-rs) for TTS, with ONNX Runtime embedded. No external dependencies, no model files needed.
+Speaking Hebrew using [renikud-rs](https://github.com/thewh1teagle/renikud) for Hebrew G2P and [piper-rs](https://github.com/thewh1teagle/piper-rs) for TTS.
 
 ## Features
 

@@ -2,6 +2,13 @@
 
 ~200MB self-contained binary for speaking Hebrew. Uses [renikud-rs](https://github.com/thewh1teagle/renikud) for Hebrew G2P and [piper-rs](https://github.com/thewh1teagle/piper-rs) for TTS, with ONNX Runtime embedded. No external dependencies, no model files needed.
 
+## Features
+
+- Self-contained ~200MB binary, no external files or dependencies at runtime
+- Hebrew text to speech via neural G2P + TTS
+- Mixed Hebrew/English input — English words are phonemized via eSpeak
+- ONNX Runtime embedded
+
 ## Usage
 
 ```sh

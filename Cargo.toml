@@ -6,7 +6,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-renikud-rs = { path = "../renikud-rs" }
+renikud-rs = { git = "https://github.com/thewh1teagle/renikud", branch = "main" }
 piper-rs = { git = "https://github.com/thewh1teagle/piper-rs", rev = "616e682" }
 rodio = "0.20"
 anyhow = "1"

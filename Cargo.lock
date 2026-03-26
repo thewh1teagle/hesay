@@ -1040,6 +1040,7 @@ checksum = "dc897dd8d9e8bd1ed8cdad82b5966c3e0ecae09fb1907d58efaa013543185d0a"
 [[package]]
 name = "renikud-rs"
 version = "0.1.0"
+source = "git+https://github.com/thewh1teagle/renikud?branch=main#2f59ae65ea155a10e89780d7c654259e2b0952d4"
 dependencies = [
  "anyhow",
  "ndarray 0.16.1",

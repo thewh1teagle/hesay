@@ -1,4 +1,9 @@
 /*
+Prepare models:
+    wget https://huggingface.co/thewh1teagle/renikud/resolve/main/model.onnx -O renikud.onnx
+    wget https://huggingface.co/thewh1teagle/phonikud-tts-checkpoints/resolve/main/michael.onnx -O michael.onnx
+    wget https://huggingface.co/thewh1teagle/phonikud-tts-checkpoints/resolve/main/model.config.json -O michael.onnx.json
+
 Usage:
     cargo run --release -- <text> [output.wav]
 
@@ -18,7 +23,7 @@ use regex::Regex;
 use renikud_rs::G2P;
 use std::sync::LazyLock;
 
-static G2P_MODEL: &[u8] = include_bytes!("../g2p.onnx");
+static G2P_MODEL: &[u8] = include_bytes!("../renikud.onnx");
 static TTS_MODEL: &[u8] = include_bytes!("../michael.onnx");
 static TTS_CONFIG: &[u8] = include_bytes!("../michael.onnx.json");
 

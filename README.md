@@ -19,9 +19,4 @@ hesay "אני אוהב machine learning" out.wav
 
 ## Build
 
-```console
-wget https://huggingface.co/thewh1teagle/renikud/resolve/main/model.onnx -O g2p.onnx
-wget https://huggingface.co/thewh1teagle/phonikud-tts-checkpoints/resolve/main/michael.onnx
-wget https://huggingface.co/thewh1teagle/phonikud-tts-checkpoints/resolve/main/model.config.json -O michael.onnx.json
-cargo build --release
-```
+See [BUILDING.md](BUILDING.md)

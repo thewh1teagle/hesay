@@ -4,7 +4,7 @@ Speaking Hebrew using [renikud-rs](https://github.com/thewh1teagle/renikud) for 
 
 ## Features
 
-- Self-contained ~200MB binary, no external files or dependencies at runtime
+- Self-contained ~100MB binary, no external files or dependencies at runtime
 - Hebrew text to speech via neural G2P + TTS
 - Mixed Hebrew/English input — English words are phonemized via eSpeak
 - ONNX Runtime embedded

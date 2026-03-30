@@ -50,45 +50,68 @@ fn to_phonemes(text: &str, g2p: &mut G2P) -> anyhow::Result<String> {
     Ok(result)
 }
 
+fn speak(text: &str, g2p: &mut G2P, piper: &mut Piper) -> anyhow::Result<()> {
+    let ipa = to_phonemes(text, g2p)?;
+    eprintln!("IPA: {ipa}");
+    let (samples, sample_rate) = piper.create(&ipa, true, None, None, None, None)?;
+    use rodio::buffer::SamplesBuffer;
+    let (_stream, handle) = rodio::OutputStream::try_default()?;
+    let sink = rodio::Sink::try_new(&handle)?;
+    sink.append(SamplesBuffer::new(1, sample_rate, samples));
+    sink.sleep_until_end();
+    Ok(())
+}
+
+fn save(text: &str, path: &str, g2p: &mut G2P, piper: &mut Piper) -> anyhow::Result<()> {
+    let ipa = to_phonemes(text, g2p)?;
+    eprintln!("IPA: {ipa}");
+    let (samples, sample_rate) = piper.create(&ipa, true, None, None, None, None)?;
+    let spec = hound::WavSpec {
+        channels: 1,
+        sample_rate,
+        bits_per_sample: 32,
+        sample_format: hound::SampleFormat::Float,
+    };
+    let mut writer = hound::WavWriter::create(path, spec)?;
+    for s in &samples {
+        writer.write_sample(*s)?;
+    }
+    writer.finalize()?;
+    eprintln!("Saved to {path}");
+    Ok(())
+}
+
+fn stdin_loop(g2p: &mut G2P, piper: &mut Piper) -> anyhow::Result<()> {
+    use std::io::BufRead;
+    let stdin = std::io::stdin();
+    for line in stdin.lock().lines() {
+        let line = line?;
+        let line = line.trim();
+        if line.is_empty() {
+            continue;
+        }
+        if let Err(e) = speak(line, g2p, piper) {
+            eprintln!("Error: {e}");
+        }
+    }
+    Ok(())
+}
+
 fn main() -> anyhow::Result<()> {
     let mut args = std::env::args().skip(1);
-    let text = args.next().context("Usage: hebrew-speaker <text> [output.wav]")?;
+    let text = args.next();
     let output = args.next();
 
-    // G2P: Hebrew+English → IPA
     let session = Session::builder()?.commit_from_memory(G2P_MODEL)?;
     let mut g2p = G2P::from_session(session)?;
-    let ipa = to_phonemes(&text, &mut g2p)?;
-    eprintln!("IPA: {ipa}");
-
-    // TTS: IPA → audio
     let config: ModelConfig = serde_json::from_slice(TTS_CONFIG)?;
     let session = Session::builder()?.commit_from_memory(TTS_MODEL)?;
     let mut piper = Piper::from_session(session, config);
-    let (samples, sample_rate) = piper.create(&ipa, true, None, None, None, None)?;
 
-    match output {
-        Some(path) => {
-            let spec = hound::WavSpec {
-                channels: 1,
-                sample_rate,
-                bits_per_sample: 32,
-                sample_format: hound::SampleFormat::Float,
-            };
-            let mut writer = hound::WavWriter::create(&path, spec)?;
-            for s in &samples {
-                writer.write_sample(*s)?;
-            }
-            writer.finalize()?;
-            eprintln!("Saved to {path}");
-        }
-        None => {
-            use rodio::buffer::SamplesBuffer;
-            let (_stream, handle) = rodio::OutputStream::try_default()?;
-            let sink = rodio::Sink::try_new(&handle)?;
-            sink.append(SamplesBuffer::new(1, sample_rate, samples));
-            sink.sleep_until_end();
-        }
+    match (text.as_deref(), output.as_deref()) {
+        (Some(text), Some(path)) => save(text, path, &mut g2p, &mut piper)?,
+        (Some(text), None) => speak(text, &mut g2p, &mut piper)?,
+        (None, _) => stdin_loop(&mut g2p, &mut piper)?,
     }
 
     Ok(())

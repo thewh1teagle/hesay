@@ -15,7 +15,6 @@ Example:
     cargo run --release -- "אני אוהב machine learning" out.wav
 */
 
-use anyhow::Context;
 use espeak_rs::text_to_phonemes;
 use ort::session::Session;
 use piper_rs::{ModelConfig, Piper};
